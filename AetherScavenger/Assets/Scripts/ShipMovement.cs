@@ -11,6 +11,9 @@ public class ShipControls : MonoBehaviour
     [SerializeField]
     private float rotationSpeed = 50f;
 
+    [SerializeField]
+    private float movementSpeed = 50f;
+
     private float currentXRot = 0f;
     private float currentZRot = 0f;
 
@@ -30,5 +33,11 @@ public class ShipControls : MonoBehaviour
         currentXRot = Mathf.Clamp(currentXRot + gyroXRot, -20f, 20f);
 
         rb.transform.localRotation = Quaternion.Euler(-currentXRot, 0f, currentZRot);
+    }
+
+    void FixedUpdate()
+    {
+        Vector3 directionalVelocity = new Vector3(currentZRot, -currentXRot, 0f) * Time.fixedDeltaTime;
+        rb.MovePosition(rb.transform.position + directionalVelocity);
     }
 }
